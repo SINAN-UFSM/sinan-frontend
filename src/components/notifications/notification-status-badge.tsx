@@ -8,29 +8,17 @@ const statusMap: Record<
     variant: "default" | "secondary" | "outline" | "destructive"
   }
 > = {
-  draft: {
-    label: "Rascunho",
+  pending: {
+    label: "Pendente",
     variant: "outline",
-  },
-  submitted: {
-    label: "Enviada",
-    variant: "secondary",
   },
   in_review: {
     label: "Em analise",
     variant: "default",
   },
-  returned: {
-    label: "Devolvida",
-    variant: "destructive",
-  },
-  completed: {
-    label: "Concluida",
-    variant: "default",
-  },
-  archived: {
-    label: "Arquivada",
-    variant: "outline",
+  resolved: {
+    label: "Resolvida",
+    variant: "secondary",
   },
 }
 

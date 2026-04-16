@@ -1,11 +1,26 @@
 import { USE_MOCKS } from "@/lib/constants"
-import { api } from "@/services/api"
+import {
+  getNotificationTypeId,
+  getNotificationTypeLabel,
+} from "@/lib/notification-types"
 import type { NotificationSchema } from "@/schemas/notification.schema"
+import { api } from "@/services/api"
 import type { ApiListResponse } from "@/types/api"
 import type {
   NotificationStatus,
   NotificationWithRelations,
 } from "@/types/notification"
+
+const mockPatientNames: Record<number, string> = {
+  1: "Maria Oliveira",
+  2: "Joao Santos",
+  3: "Ana Souza",
+}
+
+const mockUnitNames: Record<number, string> = {
+  1: "UBS Centro",
+  2: "UPA Norte",
+}
 
 const mockNotifications: NotificationWithRelations[] = [
   {
@@ -15,11 +30,37 @@ const mockNotifications: NotificationWithRelations[] = [
     unit_id: 1,
     unit_name: "UBS Centro",
     notification_type_id: 1,
-    notification_type: "Dengue",
-    status: "submitted",
+    notification_type_slug: "aids",
+    notification_type: "AIDS",
+    status: "in_review",
     notification_date: "2026-04-12",
     occurrence_date: "2026-04-10",
-    notes: "Paciente com febre e dor no corpo.",
+    notes:
+      "Paciente em acompanhamento com infectologia e equipe multiprofissional.",
+    form_data: {
+      patient_name: "Maria Oliveira",
+      patient_cpf: "12345678900",
+      patient_birth_date: "1990-02-12",
+      sex: "female",
+      race_color: "brown",
+      education_level: "high_school_complete",
+      sus_card_number: "898001234567890",
+      residence_city: "Sao Paulo",
+      residence_state: "SP",
+      vertical_transmission: "no",
+      sexual_exposure: "yes",
+      injecting_drug_use: "no",
+      other_exposure_notes: "Parceiro fixo em investigacao sorologica.",
+      diagnosis_date: "2026-04-11",
+      screening_test_result: "positive",
+      ministry_protocol_status: "confirmed",
+      hiv_lab_evidence:
+        "Carga viral detectavel e sorologia reagente em testes confirmatorios.",
+      treatment_performed:
+        "Inicio de terapia antirretroviral e acolhimento pela equipe.",
+      health_outcome: "stable",
+      outcome_details: "Retorno agendado para 30 dias.",
+    },
     created_at: "2026-04-12T10:00:00.000Z",
   },
   {
@@ -29,10 +70,28 @@ const mockNotifications: NotificationWithRelations[] = [
     unit_id: 2,
     unit_name: "UPA Norte",
     notification_type_id: 2,
-    notification_type: "Chikungunya",
+    notification_type_slug: "venomous_animal",
+    notification_type: "Acidente por animal peconhento",
     status: "in_review",
     notification_date: "2026-04-13",
     occurrence_date: "2026-04-11",
+    notes:
+      "Observacao mantida por 24 horas devido a sintomas sistemicos leves.",
+    form_data: {
+      accident_type: "scorpion",
+      accident_location: "Residencia do paciente",
+      bite_site: "Pe direito",
+      time_to_care_hours: 1,
+      local_symptoms: "Dor intensa, edema discreto e parestesia local.",
+      systemic_symptoms: "Nauseas e sudorese.",
+      antivenom_administered: "yes",
+      antivenom_ampoules: 2,
+      case_classification: "moderate",
+      local_complications: "",
+      systemic_complications: "",
+      final_diagnosis: "cured",
+      outcome_details: "Alta apos observacao e orientacoes de retorno.",
+    },
     created_at: "2026-04-13T13:20:00.000Z",
   },
   {
@@ -41,10 +100,29 @@ const mockNotifications: NotificationWithRelations[] = [
     patient_name: "Ana Souza",
     unit_id: 1,
     unit_name: "UBS Centro",
-    notification_type_id: 3,
-    notification_type: "Zika",
-    status: "completed",
+    notification_type_id: 2,
+    notification_type_slug: "venomous_animal",
+    notification_type: "Acidente por animal peconhento",
+    status: "resolved",
     notification_date: "2026-04-14",
+    occurrence_date: "2026-04-14",
+    notes: "Caso encerrado sem sequelas.",
+    form_data: {
+      accident_type: "snake",
+      accident_location: "Area rural",
+      bite_site: "Perna esquerda",
+      time_to_care_hours: 3,
+      local_symptoms: "Edema progressivo, dor e equimose.",
+      systemic_symptoms: "Sem hemorragias ou insuficiencia renal.",
+      antivenom_administered: "yes",
+      antivenom_ampoules: 8,
+      case_classification: "severe",
+      local_complications: "Necrose superficial controlada.",
+      systemic_complications: "",
+      final_diagnosis: "cured",
+      outcome_details:
+        "Evoluiu com melhora clinica e sem necessidade de amputacao.",
+    },
     created_at: "2026-04-14T09:35:00.000Z",
   },
 ]
@@ -82,32 +160,53 @@ export const notificationService = {
   },
 
   async create(payload: NotificationSchema) {
+    const notificationTypeId = getNotificationTypeId(
+      payload.notification_type_slug
+    )
+
     if (USE_MOCKS) {
-      return {
-        ...mockNotifications[0],
+      const createdNotification = {
         ...payload,
+        notification_type_id: notificationTypeId,
         id: mockNotifications.length + 1,
-        status: "draft" as const,
-        patient_name: "Paciente mockado",
-        unit_name: "Unidade mockada",
-        notification_type: "Tipo mockado",
+        patient_name:
+          mockPatientNames[payload.patient_id] ?? `Paciente #${payload.patient_id}`,
+        unit_name: mockUnitNames[payload.unit_id] ?? `Unidade #${payload.unit_id}`,
+        notification_type: getNotificationTypeLabel(payload.notification_type_slug),
         created_at: new Date().toISOString(),
-      }
+      } satisfies NotificationWithRelations
+
+      mockNotifications.unshift(createdNotification)
+
+      return createdNotification
     }
 
     const response = await api.post<NotificationWithRelations>(
       "/notifications",
-      payload
+      {
+        ...payload,
+        notification_type_id: notificationTypeId,
+      }
     )
     return response.data
   },
 
   async updateStatus(id: number, status: NotificationStatus) {
     if (USE_MOCKS) {
-      const current = mockNotifications.find(
+      const currentIndex = mockNotifications.findIndex(
         (notification) => notification.id === id
       )
-      return current ? { ...current, status } : undefined
+
+      if (currentIndex === -1) {
+        return undefined
+      }
+
+      mockNotifications[currentIndex] = {
+        ...mockNotifications[currentIndex],
+        status,
+      }
+
+      return mockNotifications[currentIndex]
     }
 
     const response = await api.patch<NotificationWithRelations>(

@@ -42,7 +42,9 @@ export function InputField<TFieldValues extends FieldValues>({
               onChange={(event) => {
                 field.onChange(
                   type === "number"
-                    ? event.currentTarget.valueAsNumber
+                    ? event.currentTarget.value === ""
+                      ? undefined
+                      : event.currentTarget.valueAsNumber
                     : event.currentTarget.value
                 )
               }}
