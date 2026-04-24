@@ -124,8 +124,13 @@ export const notificationTypeRegistry: NotificationTypeDefinitionMap = {
     id: 1,
     slug: "aids",
     label: "AIDS",
-    description:
-      "Formulario com dados do paciente, historico sexual, diagnostico e evolucao do caso.",
+    description: `Formulario com dados do paciente, historico sexual, diagnostico e evolucao do caso.
+
+A AIDS e o estagio mais avancado da doenca que ataca o sistema imunologico. A Sindrome da Imunodeficiencia Adquirida, como tambem e chamada, e causada pelo HIV. Como esse virus ataca as celulas de defesa do nosso corpo, o organismo fica mais vulneravel a diversas doencas, de um simples resfriado a infeccoes mais graves como tuberculose ou cancer. O proprio tratamento dessas doencas fica prejudicado.
+
+Ha alguns anos, receber o diagnostico de aids era uma sentenca de morte. Mas, hoje em dia, e possivel ser soropositivo e viver com qualidade de vida. Basta tomar os medicamentos indicados e seguir corretamente as recomendacoes medicas.
+
+Saber precocemente da doenca e fundamental para aumentar ainda mais a sobrevida da pessoa. Por isso, o Ministerio da Saude recomenda fazer o teste sempre que passar por alguma situacao de risco e usar sempre o preservativo.`,
     defaultValues: {
       patient_name: "",
       patient_cpf: "",
@@ -418,9 +423,9 @@ export const notificationTypeOptions = notificationTypeSlugs.map((slug) => ({
   value: slug,
 }))
 
-export function getNotificationTypeDefinition(
-  slug: NotificationTypeSlug
-): NotificationTypeDefinition {
+export function getNotificationTypeDefinition<Slug extends NotificationTypeSlug>(
+  slug: Slug
+): NotificationTypeDefinitionMap[Slug] {
   return notificationTypeRegistry[slug]
 }
 

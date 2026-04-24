@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { LogOut, Menu } from "lucide-react"
@@ -25,11 +26,28 @@ export function AppHeader() {
             <Menu />
           </Link>
         </Button>
-        <div>
-          <p className="text-sm font-semibold lg:hidden">{APP_NAME}</p>
-          <p className="text-xs text-muted-foreground">
-            {user?.name ?? "Usuario"}
-          </p>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 lg:hidden">
+            <Image
+              src="/sinan.png"
+              alt="SINAN"
+              width={32}
+              height={30}
+              className="h-8 w-auto object-contain"
+              priority
+            />
+            <div>
+              <p className="text-sm font-semibold">{APP_NAME}</p>
+              <p className="text-xs text-muted-foreground">
+                Vigilancia em saude
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">
+              {user?.name ?? "Usuario"}
+            </p>
+          </div>
         </div>
       </div>
       <Button type="button" variant="outline" onClick={handleLogout}>
