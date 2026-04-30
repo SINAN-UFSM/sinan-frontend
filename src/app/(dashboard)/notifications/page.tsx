@@ -11,9 +11,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ROUTES } from "@/lib/constants"
 import { useNotifications } from "@/hooks/use-notifications"
+import { formatNotificationDate } from "@/lib/notification-types"
 import type { NotificationWithRelations } from "@/types/notification"
-
-const dateFormatter = new Intl.DateTimeFormat("pt-BR")
 
 const columns: DataTableColumn<NotificationWithRelations>[] = [
   {
@@ -44,7 +43,7 @@ const columns: DataTableColumn<NotificationWithRelations>[] = [
   {
     key: "date",
     header: "Data",
-    cell: (row) => dateFormatter.format(new Date(row.notification_date)),
+    cell: (row) => formatNotificationDate(row.notification_date),
     className: "text-right",
   },
 ]
@@ -56,7 +55,7 @@ export default function NotificationsPage() {
     <>
       <PageTitle
         title="Notificacoes"
-        description="Registros epidemiologicos enviados pelas unidades."
+        description="Registros digitais de AIDS e acidentes por animais peconhentos, com base preparada para novos formularios."
         action={
           <Button asChild>
             <Link href={`${ROUTES.notifications}/new`}>

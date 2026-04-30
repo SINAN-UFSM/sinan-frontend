@@ -34,11 +34,15 @@ export const patientService = {
 
   async create(payload: PatientSchema) {
     if (USE_MOCKS) {
-      return {
+      const createdPatient = {
         ...payload,
         id: mockPatients.length + 1,
         created_at: new Date().toISOString(),
       } satisfies Patient
+
+      mockPatients.unshift(createdPatient)
+
+      return createdPatient
     }
 
     const response = await api.post<Patient>("/patients", payload)

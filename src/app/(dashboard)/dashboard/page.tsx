@@ -2,6 +2,7 @@
 
 import { Bell, CheckCircle2, ClipboardList, Search } from "lucide-react"
 
+import { DashboardLoadingState } from "@/app/(dashboard)/dashboard/dashboard-loading"
 import { BarChart } from "@/components/charts/bar-chart"
 import { LineChart } from "@/components/charts/line-chart"
 import { PageTitle } from "@/components/layout/page-title"
@@ -13,7 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 import { useDashboard } from "@/hooks/use-dashboard"
 
 const numberFormatter = new Intl.NumberFormat("pt-BR")
@@ -21,6 +21,10 @@ const numberFormatter = new Intl.NumberFormat("pt-BR")
 export default function DashboardPage() {
   const dashboardQuery = useDashboard()
   const summary = dashboardQuery.data
+
+  if (dashboardQuery.isLoading && !summary) {
+    return <DashboardLoadingState />
+  }
 
   return (
     <>
@@ -30,25 +34,21 @@ export default function DashboardPage() {
         <MetricCard
           title="Notificacoes"
           value={summary?.totalNotifications}
-          loading={dashboardQuery.isLoading}
           icon={Bell}
         />
         <MetricCard
           title="Enviadas"
           value={summary?.submittedNotifications}
-          loading={dashboardQuery.isLoading}
           icon={ClipboardList}
         />
         <MetricCard
           title="Em analise"
           value={summary?.inReviewNotifications}
-          loading={dashboardQuery.isLoading}
           icon={Search}
         />
         <MetricCard
           title="Concluidas"
           value={summary?.completedNotifications}
-          loading={dashboardQuery.isLoading}
           icon={CheckCircle2}
         />
       </section>
@@ -60,27 +60,23 @@ export default function DashboardPage() {
             <CardDescription>Notificacoes registradas por mes.</CardDescription>
           </CardHeader>
           <CardContent>
-            {dashboardQuery.isLoading ? (
-              <Skeleton className="h-72 w-full" />
-            ) : (
-              <LineChart
-                data={summary?.monthly ?? []}
-                xKey="month"
-                className="h-72 w-full"
-                lines={[
-                  {
-                    key: "notifications",
-                    label: "Notificacoes",
-                    color: "var(--chart-1)",
-                  },
-                  {
-                    key: "completed",
-                    label: "Concluidas",
-                    color: "var(--chart-2)",
-                  },
-                ]}
-              />
-            )}
+            <LineChart
+              data={summary?.monthly ?? []}
+              xKey="month"
+              className="h-72 w-full"
+              lines={[
+                {
+                  key: "notifications",
+                  label: "Notificacoes",
+                  color: "var(--chart-1)",
+                },
+                {
+                  key: "completed",
+                  label: "Concluidas",
+                  color: "var(--chart-2)",
+                },
+              ]}
+            />
           </CardContent>
         </Card>
 
@@ -90,18 +86,14 @@ export default function DashboardPage() {
             <CardDescription>Distribuicao das notificacoes.</CardDescription>
           </CardHeader>
           <CardContent>
-            {dashboardQuery.isLoading ? (
-              <Skeleton className="h-72 w-full" />
-            ) : (
-              <BarChart
-                data={summary?.byStatus ?? []}
-                xKey="status"
-                valueKey="total"
-                label="Total"
-                color="var(--chart-3)"
-                className="h-72 w-full"
-              />
-            )}
+            <BarChart
+              data={summary?.byStatus ?? []}
+              xKey="status"
+              valueKey="total"
+              label="Total"
+              color="var(--chart-3)"
+              className="h-72 w-full"
+            />
           </CardContent>
         </Card>
       </section>
@@ -112,12 +104,10 @@ export default function DashboardPage() {
 function MetricCard({
   title,
   value,
-  loading,
   icon: Icon,
 }: {
   title: string
   value?: number
-  loading: boolean
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
 }) {
   return (
@@ -131,13 +121,9 @@ function MetricCard({
         </CardAction>
       </CardHeader>
       <CardContent>
-        {loading ? (
-          <Skeleton className="h-8 w-24" />
-        ) : (
-          <p className="text-3xl font-semibold tracking-tight">
-            {numberFormatter.format(value ?? 0)}
-          </p>
-        )}
+        <p className="text-3xl font-semibold tracking-tight">
+          {numberFormatter.format(value ?? 0)}
+        </p>
       </CardContent>
     </Card>
   )

@@ -1,9 +1,9 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
-  BarChart3,
   Bell,
   Building2,
   FileText,
@@ -53,10 +53,15 @@ export function AppSidebar() {
 
   return (
     <aside className="hidden min-h-screen w-64 border-r bg-background lg:block">
-      <div className="flex h-16 items-center gap-2 border-b px-5">
-        <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-          <BarChart3 className="size-4" />
-        </div>
+      <div className="flex h-16 items-center gap-3 border-b px-5">
+        <Image
+          src="/sinan.png"
+          alt="SINAN"
+          width={40}
+          height={38}
+          className="h-10 w-auto object-contain"
+          priority
+        />
         <div>
           <p className="text-sm font-semibold">{APP_NAME}</p>
           <p className="text-xs text-muted-foreground">Vigilancia em saude</p>

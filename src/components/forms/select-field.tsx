@@ -4,6 +4,7 @@ import type { Control, FieldPath, FieldValues } from "react-hook-form"
 
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,10 +23,14 @@ type SelectFieldProps<TFieldValues extends FieldValues> = {
   name: FieldPath<TFieldValues>
   label: string
   placeholder?: string
-  options: Array<{
+  description?: string
+  disabled?: boolean
+  options: ReadonlyArray<{
     label: string
     value: string
   }>
+  parseValue?: (value: string) => unknown
+  onValueChange?: (value: string) => void
 }
 
 export function SelectField<TFieldValues extends FieldValues>({
@@ -33,7 +38,11 @@ export function SelectField<TFieldValues extends FieldValues>({
   name,
   label,
   placeholder = "Selecione",
+  description,
+  disabled,
   options,
+  parseValue,
+  onValueChange,
 }: SelectFieldProps<TFieldValues>) {
   return (
     <FormField
@@ -43,8 +52,12 @@ export function SelectField<TFieldValues extends FieldValues>({
         <FormItem>
           <FormLabel>{label}</FormLabel>
           <Select
-            onValueChange={field.onChange}
-            defaultValue={field.value ? String(field.value) : undefined}
+            onValueChange={(value) => {
+              field.onChange(parseValue ? parseValue(value) : value)
+              onValueChange?.(value)
+            }}
+            value={field.value ? String(field.value) : undefined}
+            disabled={disabled}
           >
             <FormControl>
               <SelectTrigger className="w-full">
@@ -59,6 +72,7 @@ export function SelectField<TFieldValues extends FieldValues>({
               ))}
             </SelectContent>
           </Select>
+          {description ? <FormDescription>{description}</FormDescription> : null}
           <FormMessage />
         </FormItem>
       )}
