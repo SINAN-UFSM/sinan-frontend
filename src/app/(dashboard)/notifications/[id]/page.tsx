@@ -137,7 +137,7 @@ export default function NotificationDetailsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-6">
-          {notificationQuery.isPending ? (
+          {notificationQuery.isPending && notificationQuery.isFetching ? (
             <Skeleton className="h-48 w-full" />
           ) : notification && definition && workflow ? (
             <>
