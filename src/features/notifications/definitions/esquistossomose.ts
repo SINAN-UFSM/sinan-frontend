@@ -15,7 +15,7 @@ import {
 const optionalTextSchema = z.string().optional();
 
 const sections = [
-const patientSection = {
+{
     id: "patient",
     title: "Dados do Paciente",
     description: "Capture o retrato do paciente na notificacao, mesmo quando ele ja existe no cadastro geral.",
