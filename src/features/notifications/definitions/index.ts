@@ -4,7 +4,7 @@ import { venomousAnimalNotificationDefinition } from "@/features/notifications/d
 import { botulismNotificationDefinition } from "@/features/notifications/definitions/botulism"
 import { choleraNotificationDefinition } from "@/features/notifications/definitions/cholera"
 import { whoopingCoughNotificationDefinition } from "@/features/notifications/definitions/whooping-cough"
-import { dengueChikungunyaNotificationDefinition } from "@/features/notifications/definitions/dengue-chikungunya"
+import { dengueChikungunyaNotificationDefinition } from "@/features/notifications/definitions/dengue"
 
 export { aidsNotificationDefinition, venomousAnimalNotificationDefinition, botulismNotificationDefinition, choleraNotificationDefinition, whoopingCoughNotificationDefinition, dengueChikungunyaNotificationDefinition }
 export * from "@/features/notifications/definitions/shared"
