@@ -397,7 +397,7 @@ id: "transmission",
       },
       {
         name: "biological_material",
-        label: "Após investigação realizada conforme algoritmo do PN DST/AIDS, a transfusão/acidente com material biológico foi considerada causa da infecção pelo HIV?",
+        label: "Acidente com material biológico composterior soroconversão até 6 meses",
         kind: "select",
         schema: z.string().min(1, "Campo obrigatorio"),
         defaultValue: "",
