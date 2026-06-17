@@ -1,4 +1,4 @@
-import { aidsNotificationDefinition } from "@/features/notifications/definitions/aids"
+import { aidsChildrenNotificationDefinition } from "@/features/notifications/definitions/aids"
 import { antiRabiesNotificationDefinition } from "@/features/notifications/definitions/anti_rabies"
 import { botulismNotificationDefinition } from "@/features/notifications/definitions/botulism"
 import { choleraNotificationDefinition } from "@/features/notifications/definitions/cholera"
@@ -9,9 +9,9 @@ import { schistosomiasisNotificationDefinition } from "@/features/notifications/
 import { yellowFeverNotificationDefinition } from "@/features/notifications/definitions/febre-amarela"
 import { venomousAnimalNotificationDefinition } from "@/features/notifications/definitions/venomous-animal"
 import { whoopingCoughNotificationDefinition } from "@/features/notifications/definitions/whooping-cough"
-
+import { occupationalDermatosesNotificationDefinition } from "@/features/notifications/definitions/occupational_dermatoses"
 export {
-  aidsNotificationDefinition,
+  aidsChildrenNotificationDefinition,
   antiRabiesNotificationDefinition,
   botulismNotificationDefinition,
   chikungunyaFeverNotificationDefinition,
@@ -22,11 +22,12 @@ export {
   yellowFeverNotificationDefinition,
   venomousAnimalNotificationDefinition,
   whoopingCoughNotificationDefinition,
+  occupationalDermatosesNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
 export const notificationTypeDefinitionList = [
-  aidsNotificationDefinition,
+  aidsChildrenNotificationDefinition,
   venomousAnimalNotificationDefinition,
   botulismNotificationDefinition,
   epizootyNotificationDefinition,
@@ -37,10 +38,11 @@ export const notificationTypeDefinitionList = [
   dengueChikungunyaNotificationDefinition,
   antiRabiesNotificationDefinition,
   chikungunyaFeverNotificationDefinition,
+  occupationalDermatosesNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
-  aids: aidsNotificationDefinition,
+  aids: aidsChildrenNotificationDefinition,
   venomous_animal: venomousAnimalNotificationDefinition,
   botulism: botulismNotificationDefinition,
   epizooty: epizootyNotificationDefinition,
@@ -51,4 +53,5 @@ export const notificationTypeDefinitions = {
   dengue_chikungunya: dengueChikungunyaNotificationDefinition,
   anti_rabies: antiRabiesNotificationDefinition,
   chikungunya_fever: chikungunyaFeverNotificationDefinition,
+  occupational_dermatoses: occupationalDermatosesNotificationDefinition
 } as const
