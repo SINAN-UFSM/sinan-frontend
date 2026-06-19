@@ -14,6 +14,7 @@ import { biologicalMaterialExposureNotificationDefinition } from "@/features/not
 import { lerDortNotificationDefinition } from "@/features/notifications/definitions/ler_dort"
 import { pairNotificationDefinition } from "@/features/notifications/definitions/pair"
 import { pneumoconiosesNotificationDefinition } from "@/features/notifications/definitions/pneumoconiose"
+import { mentalDisordersNotificationDefinition } from "@/features/notifications/definitions/mental_disorder"
 export {
   aidsChildrenNotificationDefinition,
   antiRabiesNotificationDefinition,
@@ -30,7 +31,8 @@ export {
   biologicalMaterialExposureNotificationDefinition,
   lerDortNotificationDefinition,
   pairNotificationDefinition,
-  pneumoconiosesNotificationDefinition
+  pneumoconiosesNotificationDefinition,
+  mentalDisordersNotificationDefinition
 }
 export * from "@/features/notifications/definitions/shared"
 
@@ -50,7 +52,8 @@ export const notificationTypeDefinitionList = [
   biologicalMaterialExposureNotificationDefinition,
   lerDortNotificationDefinition,
   pairNotificationDefinition,
-  pneumoconiosesNotificationDefinition
+  pneumoconiosesNotificationDefinition,
+  mentalDisordersNotificationDefinition
 ] as const
 
 export const notificationTypeDefinitions = {
@@ -69,5 +72,6 @@ export const notificationTypeDefinitions = {
   biological_material_exposure: biologicalMaterialExposureNotificationDefinition,
   ler_dort: lerDortNotificationDefinition,
   pair: pairNotificationDefinition,
-  pneumoconioses: pneumoconiosesNotificationDefinition
+  pneumoconioses: pneumoconiosesNotificationDefinition,
+  mental_disorder: mentalDisordersNotificationDefinition
 } as const
