@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useCreatePatient, usePatients } from "@/hooks/use-patients"
 import { useUnits } from "@/hooks/use-units"
+import { ufOptions } from "@/features/notifications/definitions/shared"
 import {
   getNotificationTypeDefinition,
   notificationStatusOptions,
@@ -122,6 +123,10 @@ function isFieldEmpty(field: NotificationFieldDefinition, value: unknown) {
   }
 
   return value === undefined || value === null || String(value).trim() === ""
+}
+
+function isUfTextField(field: NotificationFieldDefinition) {
+  return field.kind === "text" && /\bUF\b/i.test(field.label)
 }
 
 function buildRequiredFieldErrors(
@@ -869,19 +874,20 @@ export function NotificationForm({
             <div className={`grid gap-4 ${getSectionGridClass(section.columns)}`}>
               {section.fields.map((field: NotificationFieldDefinition) => {
                 const name = `form_data.${field.name}` as never
+                const shouldRenderUfSelect = isUfTextField(field)
 
                 return (
                   <div
                     key={field.name}
                     className={field.fullWidth ? getFieldSpanClass(section.columns) : ""}
                   >
-                    {field.kind === "select" ? (
+                    {field.kind === "select" || shouldRenderUfSelect ? (
                       <SelectField
                         control={form.control}
                         name={name}
                         label={`${field.label} *`}
                         placeholder={field.placeholder}
-                        options={field.options ?? []}
+                        options={field.options ?? ufOptions}
                       />
                     ) : field.kind === "textarea" ? (
                       <TextareaField

@@ -219,14 +219,38 @@ export default function PatientDetailsPage() {
                 <dd className="font-medium">{patient.document ?? "-"}</dd>
               </div>
               <div className="grid gap-1">
+                <dt className="text-muted-foreground">Cartão SUS</dt>
+                <dd className="font-medium">{patient.sus_card ?? "-"}</dd>
+              </div>
+              <div className="grid gap-1">
                 <dt className="text-muted-foreground">Nascimento</dt>
                 <dd className="font-medium">
                   {formatNotificationDate(patient.birth_date)}
                 </dd>
               </div>
               <div className="grid gap-1">
+                <dt className="text-muted-foreground">Cidade de Nascimento</dt>
+                <dd className="font-medium">{patient.birth_city ?? "-"}</dd>
+              </div>
+              <div className="grid gap-1">
                 <dt className="text-muted-foreground">Telefone</dt>
                 <dd className="font-medium">{patient.phone ?? "-"}</dd>
+              </div>
+              <div className="grid gap-1">
+                <dt className="text-muted-foreground">Endereço</dt>
+                <dd className="font-medium">{patient.current_address ?? "-"}</dd>
+              </div>
+              <div className="grid gap-1">
+                <dt className="text-muted-foreground">Gênero</dt>
+                <dd className="font-medium">{patient.gender ?? "-"}</dd>
+              </div>
+              <div className="grid gap-1">
+                <dt className="text-muted-foreground">Raça/Cor</dt>
+                <dd className="font-medium">{patient.race_color ?? "-"}</dd>
+              </div>
+              <div className="grid gap-1">
+                <dt className="text-muted-foreground">Escolaridade</dt>
+                <dd className="font-medium">{patient.education_level ?? "-"}</dd>
               </div>
               <div className="grid gap-1">
                 <dt className="text-muted-foreground">Notificações</dt>
